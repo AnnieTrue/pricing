@@ -101,25 +101,17 @@
 	<p class="input2">full detail, 4"x4" squares: <input type="number" id="squares" value=""></p>
 	<p class="input3">hourly rate: <input type="number" id="rate" value="15"></p>
 	<button class="myButton" type="button"
-	onclick="document.getElementById('output price').innerHTML = 'price: $'+price(document.getElementById('length').value, document.getElementById('width').value, document.getElementById('squares').value, document.getElementById('rate').value), document.getElementById('output price without canvas').innerHTML='(without canvas: $'+priceWithoutCanvas(document.getElementById('length').value, document.getElementById('width').value, document.getElementById('squares').value, document.getElementById('rate').value)+')'">
+	onclick="document.getElementById('output price').innerHTML = 'price: $'+price(document.getElementById('length').value, document.getElementById('width').value, document.getElementById('squares').value, document.getElementById('rate').value), document.getElementById('canvas price').innerHTML='(canvas: $'+canvas_price(document.getElementById('length').value, document.getElementById('width').value)+')'">
 	calculate</button>
 
 	<p class="output1" id="output price"></p>
-	<p class="output2" id="output price without canvas"></p>
+	<p class="output2" id="canvas price"></p>
 </div>
 <script>
 	function price(x,y,i, r){ //x=length, y=width, i=# of full detail squares, r=hourly rate
 		z = x*y;
 
-		canvas = 0;
-
-		if(z<200){
-			canvas=z*.1
-		}else if(z<1300){
-			canvas=z*.05
-		}else{
-			canvas=z*.01;
-		}
+		canvas=canvas_price(x,y);
 
 		paint = 10 * (z/100);
 
@@ -128,14 +120,20 @@
 		return Math.ceil(canvas + paint + hours);
 
 	}
-	function priceWithoutCanvas(x,y,i, r){
-		z = x*y;
+	function canvas_price(x,y){
+		z= x*y;
 
-		paint = 10 * (z/100);
+		canvas = 0;
 
-		hours = r * i;
+		if(z<200){
+			canvas=z*.1;
+		}else if(z<1300){
+			canvas=z*.05;
+		}else{
+			canvas=z*.01;
+		}
 
-		return Math.ceil(paint + hours);
+		return Math.ceil(canvas);
 	}
 </script>
 
