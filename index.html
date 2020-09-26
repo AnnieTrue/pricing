@@ -111,11 +111,13 @@
 	function price(x,y,i, r){ //x=length, y=width, i=# of full detail squares, r=hourly rate
 		z = x*y;
 
+		s = (z/16)-i; //number of squares that are not full detail (painted at half the rate)
+
 		canvas=canvas_price(x,y);
 
 		paint = 10 * (z/100);
 
-		hours = r * i;
+		hours = (r * i)+((r/2)*s); //(rate * # of full detail squares) + (half rate * left over squares)
 
 		return Math.ceil(canvas + paint + hours);
 
