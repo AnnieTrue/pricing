@@ -21,7 +21,9 @@
 		'myButton myButton'
 		'output1 output1'
 		'output2 output2';
-		grid-gap: 1vh;
+		grid-gap: 1vw;
+		margin-left: 2vw;
+		margin-right: 2vw;
 	}
 
 	.header{
@@ -98,26 +100,30 @@
 	inches by 
 	<input type="number" id="width" value="">
 	inches</p>
-	<p class="input2">full detail, 4"x4" squares: <input type="number" id="squares" value=""></p>
+	<p class="input2">% of canvas in full detail: <input type="number" id="detail" value=""> %</p>
 	<p class="input3">hourly rate: <input type="number" id="rate" value="15"></p>
 	<button class="myButton" type="button"
-	onclick="document.getElementById('output price').innerHTML = 'price: $'+price(document.getElementById('length').value, document.getElementById('width').value, document.getElementById('squares').value, document.getElementById('rate').value), document.getElementById('canvas price').innerHTML='(canvas: $'+canvas_price(document.getElementById('length').value, document.getElementById('width').value)+')'">
+	onclick="document.getElementById('output price').innerHTML = 'price: $'+price(document.getElementById('length').value, document.getElementById('width').value, document.getElementById('detail').value, document.getElementById('rate').value), document.getElementById('canvas price').innerHTML='(canvas: $'+canvas_price(document.getElementById('length').value, document.getElementById('width').value)+')'">
 	calculate</button>
 
 	<p class="output1" id="output price"></p>
 	<p class="output2" id="canvas price"></p>
 </div>
 <script>
-	function price(x,y,i, r){ //x=length, y=width, i=# of full detail squares, r=hourly rate
+	function price(x,y,i, r){ //x=length, y=width, i= % of full detail, r=hourly rate
 		z = x*y;
 
-		s = (z/16)-i; //number of squares that are not full detail (painted at half the rate)
+		f = z/16;//total number of 4"x4" squares in painting
+
+		d = f*(i/100);//number of 4"x4" squares in full detail
+
+		s = f-d; //number of squares that are not full detail (painted at half the rate)
 
 		canvas=canvas_price(x,y);
 
 		paint = 10 * (z/100);
 
-		hours = (r * i)+((r/2)*s); //(rate * # of full detail squares) + (half rate * left over squares)
+		hours = (r * d)+((r/2)*s); //(rate * # of full detail squares) + (half rate * left over squares)
 
 		return Math.ceil(canvas + paint + hours);
 
